@@ -248,6 +248,13 @@ class Component extends DCLogic {
   }
 
   async initThree() {
+    // PASO 2: Solo cargar Three.js en desktop
+    if (window.innerWidth < 768) {
+      const canvas = this.canvasRef.current;
+      if (canvas) canvas.style.display = 'none';
+      return;
+    }
+
     const THREE = await import('https://unpkg.com/three@0.160.0/build/three.module.js');
     const canvas = this.canvasRef.current;
     if (!canvas) return;
