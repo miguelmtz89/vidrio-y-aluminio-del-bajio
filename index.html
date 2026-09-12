@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vidrio y Aluminio del Bajío</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: oklch(0.15 0.005 260); color: oklch(0.97 0.003 260); font-family: Barlow, Helvetica, Arial, sans-serif; }
+  a { color: oklch(0.75 0.15 60); text-decoration: none; }
+  a:hover { color: oklch(0.82 0.15 60); }
+  @keyframes floaty { 0% { transform: translateY(0); } 50% { transform: translateY(-10px); } 100% { transform: translateY(0); } }
+  ::selection { background: oklch(0.75 0.15 60 / 0.35); }
+  
+  header { position: sticky; top: 0; z-index: 50; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 14px 5vw; background: oklch(0.13 0.005 260 / 0.85); backdrop-filter: blur(10px); border-bottom: 1px solid oklch(1 0 0 / 0.08); }
+  header img { height: 30px; width: auto; border-radius: 4px; }
+  nav { display: flex; align-items: center; gap: 28px; }
+  nav a { color: oklch(0.85 0.01 260); font-size: 14px; display: flex; align-items: center; gap: 8px; background: oklch(0.75 0.15 60); color: oklch(0.15 0.02 60); font-family: Oswald, sans-serif; font-weight: 600; padding: 10px 18px; border-radius: 999px; white-space: nowrap; }
+  
+  section { padding: 100px 5vw; max-width: 1280px; margin: 0 auto; }
+  section.hero { position: relative; min-height: 92vh; display: flex; align-items: center; overflow: hidden; background: radial-gradient(ellipse 80% 60% at 70% 30%, oklch(0.22 0.02 250 / 0.6), oklch(0.15 0.005 260) 70%); padding: 0; max-width: 100%; }
+  section.hero canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+  section.hero > div { position: relative; z-index: 2; max-width: 640px; padding: 0 5vw; }
+  section.hero h1 { font-family: Oswald, sans-serif; font-weight: 700; font-size: clamp(34px, 5.5vw, 60px); line-height: 1.05; margin: 0 0 20px; letter-spacing: -0.5px; }
+  section.hero p { font-size: clamp(16px, 1.6vw, 19px); line-height: 1.6; color: oklch(0.82 0.008 260); margin: 0 0 32px; max-width: 520px; }
+  .hero-label { display: inline-flex; align-items: center; gap: 8px; background: oklch(1 0 0 / 0.06); border: 1px solid oklch(1 0 0 / 0.1); padding: 6px 14px; border-radius: 999px; font-size: 13px; color: oklch(0.78 0.01 260); margin-bottom: 22px; }
+  .hero-btns { display: flex; flex-wrap: wrap; gap: 14px; }
+  .hero-btns > div { display: flex; flex-direction: column; gap: 6px; }
+  .btn-primary { display: flex; align-items: center; gap: 10px; background: oklch(0.75 0.15 60); color: oklch(0.15 0.02 60); font-family: Oswald, sans-serif; font-weight: 600; font-size: 16px; padding: 15px 26px; border-radius: 10px; border: none; cursor: pointer; }
+  .btn-secondary { display: flex; align-items: center; gap: 10px; background: transparent; color: oklch(0.97 0.003 260); border: 1px solid oklch(1 0 0 / 0.25); font-family: Oswald, sans-serif; font-weight: 600; font-size: 16px; padding: 15px 26px; border-radius: 10px; cursor: pointer; }
+  .phone-number { font-family: Oswald, sans-serif; font-weight: 700; font-size: 22px; color: oklch(0.75 0.15 60); text-align: center; }
+  .hero-scroll { position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%); font-size: 12px; color: oklch(0.6 0.01 260); letter-spacing: 1px; text-transform: uppercase; }
+  
+  .section-header { max-width: 620px; margin: 0 0 50px; }
+  .section-label { font-family: Oswald, sans-serif; color: oklch(0.75 0.15 60); font-weight: 600; font-size: 14px; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 12px; }
+  h2 { font-family: Oswald, sans-serif; font-weight: 700; font-size: clamp(28px, 3.5vw, 42px); margin: 0; line-height: 1.1; }
+  
+  .services-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; }
+  .service-card { background: oklch(0.19 0.006 260); border: 1px solid oklch(1 0 0 / 0.07); border-radius: 14px; overflow: hidden; }
+  .service-card img { width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block; }
+  .service-card p { padding: 18px 20px 22px; font-family: Oswald, sans-serif; font-weight: 600; font-size: 17px; line-height: 1.3; }
+  
+  section.proceso { background: oklch(0.12 0.006 260); }
+  .proceso-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 28px; }
+  .proceso-step { display: flex; flex-direction: column; gap: 14px; }
+  .paso-num { font-family: Oswald, sans-serif; font-weight: 700; font-size: 44px; color: oklch(0.75 0.15 60); }
+  .paso-title { font-family: Oswald, sans-serif; font-weight: 600; font-size: 19px; }
+  .paso-desc { color: oklch(0.72 0.008 260); font-size: 15px; line-height: 1.5; }
+  
+  section.why-us { padding: 100px 5vw; }
+  .why-grid { display: grid; grid-template-columns: minmax(280px, 1fr) minmax(280px, 1.2fr); gap: 60px; align-items: center; }
+  .why-grid-left h2 { margin: 0 0 20px; }
+  .why-grid-left p { color: oklch(0.75 0.008 260); font-size: 16px; line-height: 1.6; }
+  .why-grid-right { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .stat-card { background: oklch(0.19 0.006 260); border: 1px solid oklch(1 0 0 / 0.07); border-radius: 14px; padding: 28px; }
+  .stat-num { font-family: Oswald, sans-serif; font-weight: 700; font-size: 40px; color: oklch(0.75 0.15 60); }
+  .stat-text { font-size: 14px; color: oklch(0.78 0.008 260); margin-top: 6px; }
+  
+  section.galeria { padding: 100px 5vw 0; background: oklch(0.12 0.006 260); }
+  .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; padding-bottom: 100px; }
+  .gallery-item { aspect-ratio: 4/5; border-radius: 12px; overflow: hidden; background: oklch(0.22 0.008 260); }
+  .gallery-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  
+  section.form { padding: 100px 5vw; max-width: 820px; margin: 0 auto; }
+  .form-container { display: flex; flex-direction: column; gap: 18px; background: oklch(0.19 0.006 260); border: 1px solid oklch(1 0 0 / 0.07); border-radius: 16px; padding: 32px; }
+  .form-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 18px; }
+  .form-group { display: flex; flex-direction: column; gap: 8px; }
+  .form-group label { font-size: 13px; color: oklch(0.7 0.008 260); }
+  .form-group input, .form-group select, .form-group textarea { background: oklch(0.15 0.005 260); border: 1px solid oklch(1 0 0 / 0.12); border-radius: 8px; padding: 12px 14px; color: oklch(0.97 0.003 260); font-size: 15px; font-family: inherit; }
+  .form-tip { font-size: 13px; color: oklch(0.6 0.01 260); }
+  .btn-submit { align-self: flex-start; display: flex; align-items: center; gap: 10px; background: oklch(0.75 0.15 60); color: oklch(0.15 0.02 60); border: none; font-family: Oswald, sans-serif; font-weight: 600; font-size: 16px; padding: 15px 26px; border-radius: 10px; cursor: pointer; }
+  
+  footer { padding: 60px 5vw 40px; border-top: 1px solid oklch(1 0 0 / 0.08); display: flex; flex-wrap: wrap; gap: 24px; justify-content: space-between; align-items: center; }
+  footer img { height: 24px; border-radius: 4px; }
+  .footer-text { font-size: 14px; color: oklch(0.65 0.008 260); }
+  .footer-links { display: flex; gap: 20px; font-size: 14px; color: oklch(0.65 0.008 260); }
+  
+  .floating-wa { position: fixed; bottom: 24px; right: 24px; z-index: 60; display: flex; align-items: center; justify-content: center; width: 58px; height: 58px; border-radius: 50%; background: oklch(0.72 0.16 145); box-shadow: 0 8px 24px oklch(0 0 0 / 0.4); animation: floaty 3s ease-in-out infinite; }
+</style>
+</head>
+<body>
+
+<header>
+  <div style="display: flex; align-items: center; gap: 14px;">
+    <img src="assets/logo.png" alt="Vidrio y Aluminio del Bajío">
+  </div>
+  <nav>
+    <a href="#servicios">Servicios</a>
+    <a href="#galeria">Galería</a>
+    <a href="https://wa.me/524271613399?text=Hola%2C%20quiero%20una%20cotizaci%C3%B3n%20de%20Vidrio%20y%20Aluminio%20del%20Baj%C3%ADo." target="_blank">Cotizar ahora</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <canvas id="heroCanvas"></canvas>
+  <div>
+    <div class="hero-label">Más de 30 años instalando en el Bajío</div>
+    <h1>¿Quieres darle un nuevo estilo a tu casa, oficina o negocio?</h1>
+    <p>En <strong>Vidrio y Aluminio del Bajío</strong> convertimos tus ideas en espacios funcionales, elegantes y duraderos con soluciones de aluminio y cristal de la más alta calidad.</p>
+    <div class="hero-btns">
+      <div>
+        <a href="https://wa.me/524271613399?text=Hola%2C%20quiero%20una%20cotizaci%C3%B3n%20de%20Vidrio%20y%20Aluminio%20del%20Baj%C3%ADo." target="_blank" class="btn-primary">Cotización gratis por WhatsApp</a>
+        <div class="phone-number">52 427 161 3399</div>
+      </div>
+      <a href="#cotizar" class="btn-secondary">Llenar formulario</a>
+    </div>
+  </div>
+  <div class="hero-scroll">Desliza para ver más</div>
+</section>
+
+<section id="servicios">
+  <div class="section-header">
+    <div class="section-label">Fabricación e instalación</div>
+    <h2>Lo que fabricamos e instalamos</h2>
+  </div>
+  <div class="services-grid">
+    <div class="service-card">
+      <img src="assets/gallery-1.jpg" alt="Ventanas de aluminio">
+      <p>Ventanas de aluminio</p>
+    </div>
+    <div class="service-card">
+      <img src="assets/gallery-2.jpg" alt="Puertas de aluminio">
+      <p>Puertas de aluminio</p>
+    </div>
+    <div class="service-card">
+      <img src="assets/gallery-3.jpg" alt="Canceles para baño">
+      <p>Canceles para baño</p>
+    </div>
+    <div class="service-card">
+      <img src="assets/gallery-4.jpg" alt="Domos">
+      <p>Domos</p>
+    </div>
+    <div class="service-card">
+      <img src="assets/gallery-5.jpg" alt="Barandales de vidrio templado">
+      <p>Barandales de vidrio templado</p>
+    </div>
+    <div class="service-card">
+      <img src="assets/gallery-6.jpg" alt="Mosquiteros">
+      <p>Mosquiteros</p>
+    </div>
+    <div class="service-card">
+      <img src="assets/gallery-7.jpg" alt="Fachadas de cristal y aluminio">
+      <p>Fachadas de cristal y aluminio</p>
+    </div>
+    <div class="service-card">
+      <img src="assets/gallery-1.jpg" alt="Construcción residencial">
+      <p>Construcción residencial</p>
+    </div>
+    <div class="service-card">
+      <img src="assets/gallery-2.jpg" alt="Pérgolas">
+      <p>Pérgolas</p>
+    </div>
+    <div class="service-card">
+      <img src="assets/gallery-3.jpg" alt="Ventanas en PVC">
+      <p>Ventanas en PVC</p>
+    </div>
+  </div>
+</section>
+
+<section class="proceso">
+  <div style="max-width: 1280px; margin: 0 auto;">
+    <div class="section-header">
+      <div class="section-label">Cotizar es muy fácil</div>
+      <h2>Tres pasos y listo</h2>
+    </div>
+    <div class="proceso-grid">
+      <div class="proceso-step">
+        <div class="paso-num">01</div>
+        <div class="paso-title">Medidas aproximadas</div>
+        <div class="paso-desc">Envíanos el tamaño del espacio que quieres cubrir.</div>
+      </div>
+      <div class="proceso-step">
+        <div class="paso-num">02</div>
+        <div class="paso-title">Una fotografía del área</div>
+        <div class="paso-desc">Ayúdanos a ver el espacio para dar una propuesta precisa.</div>
+      </div>
+      <div class="proceso-step">
+        <div class="paso-num">03</div>
+        <div class="paso-title">Ubicación del proyecto</div>
+        <div class="paso-desc">Con esto, te asesoramos y preparamos tu cotización sin compromiso.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="why-us">
+  <div class="why-grid">
+    <div class="why-grid-left">
+      <div class="section-label">¿Por qué elegirnos?</div>
+      <h2>Calidad y confianza en cada instalación</h2>
+      <p>Haz realidad el espacio que imaginas con la calidad y confianza que solo Vidrio y Aluminio del Bajío puede ofrecer.</p>
+    </div>
+    <div class="why-grid-right">
+      <div class="stat-card">
+        <div class="stat-num">30+</div>
+        <div class="stat-text">años de experiencia</div>
+      </div>
+      <div class="stat-card">
+        <div style="font-family: Oswald, sans-serif; font-weight: 600; font-size: 18px; line-height: 1.4;">Instalación profesional</div>
+        <div class="stat-text" style="margin-top: 10px;">Querétaro · San Juan del Río · San Miguel de Allende · Estado de México</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="galeria" class="galeria">
+  <div class="section-header">
+    <div class="section-label">Trabajos realizados</div>
+    <h2>Proyectos entregados en el Bajío</h2>
+  </div>
+  <div class="gallery-grid">
+    <div class="gallery-item"><img src="assets/gallery-1.jpg" alt="Proyecto 1"></div>
+    <div class="gallery-item"><img src="assets/gallery-2.jpg" alt="Proyecto 2"></div>
+    <div class="gallery-item"><img src="assets/gallery-3.jpg" alt="Proyecto 3"></div>
+    <div class="gallery-item"><img src="assets/gallery-4.jpg" alt="Proyecto 4"></div>
+    <div class="gallery-item"><img src="assets/gallery-5.jpg" alt="Proyecto 5"></div>
+    <div class="gallery-item"><img src="assets/gallery-6.jpg" alt="Proyecto 6"></div>
+    <div class="gallery-item"><img src="assets/gallery-7.jpg" alt="Proyecto 7"></div>
+  </div>
+</section>
+
+<section id="cotizar" class="form">
+  <div class="section-header">
+    <div class="section-label">Cotización sin compromiso</div>
+    <h2>Cuéntanos de tu proyecto</h2>
+    <p style="color: oklch(0.75 0.008 260); font-size: 16px; line-height: 1.6;">Llena estos datos y te lo enviamos directo a WhatsApp para asesorarte.</p>
+  </div>
+  <form class="form-container" onsubmit="handleSubmit(event)">
+    <div class="form-row">
+      <div class="form-group">
+        <label>Nombre</label>
+        <input type="text" id="nombre" placeholder="Tu nombre">
+      </div>
+      <div class="form-group">
+        <label>Teléfono</label>
+        <input type="tel" id="telefono" placeholder="Tu número">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Ubicación del proyecto</label>
+        <select id="ubicacion">
+          <option value="Querétaro">Querétaro</option>
+          <option value="San Juan del Río">San Juan del Río</option>
+          <option value="San Miguel de Allende">San Miguel de Allende</option>
+          <option value="Estado de México">Estado de México</option>
+          <option value="Otra">Otra ubicación</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Medidas aproximadas</label>
+        <input type="text" id="medidas" placeholder="Ej. 1.20 x 1.50 m">
+      </div>
+    </div>
+    <div class="form-group">
+      <label>¿Qué necesitas? (opcional)</label>
+      <textarea id="mensaje" placeholder="Cuéntanos más sobre tu proyecto" rows="3"></textarea>
+    </div>
+    <div class="form-tip">Tip: adjunta una fotografía del área directamente en el chat de WhatsApp.</div>
+    <button type="submit" class="btn-submit">Enviar por WhatsApp</button>
+  </form>
+</section>
+
+<footer>
+  <div style="display: flex; align-items: center; gap: 10px;">
+    <img src="assets/logo.png" alt="logo">
+    <span class="footer-text">Vidrio y Aluminio del Bajío · Querétaro, México</span>
+  </div>
+  <div class="footer-links">
+    <a href="https://wa.me/524271613399" target="_blank">WhatsApp: +52 427 161 3399</a>
+  </div>
+</footer>
+
+<a href="https://wa.me/524271613399?text=Hola%2C%20quiero%20una%20cotizaci%C3%B3n%20de%20Vidrio%20y%20Aluminio%20del%20Baj%C3%ADo." target="_blank" class="floating-wa">
+  <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.36 5.07L2 22l5.1-1.34A9.94 9.94 0 0112 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm0 18c-1.6 0-3.1-.43-4.4-1.19l-.31-.19-3.02.79.8-2.95-.2-.32A7.94 7.94 0 014 12c0-4.42 3.58-8 8-8s8 3.58 8 8-3.58 8-8 8zm4.4-5.9c-.24-.12-1.43-.7-1.65-.78-.22-.08-.38-.12-.54.12-.16.24-.62.78-.76.94-.14.16-.28.18-.52.06-.24-.12-1-.37-1.9-1.17-.7-.62-1.17-1.39-1.31-1.63-.14-.24-.01-.37.11-.49.12-.12.28-.32.42-.48.14-.16.18-.28.28-.46.1-.18.05-.34-.02-.46-.08-.12-.62-1.5-.86-2.06-.2-.5-.4-.43-.55-.44h-.47c-.16 0-.42.06-.64.3-.22.24-.85.83-.85 2.02 0 1.19.87 2.34 1 2.5.12.16 1.67 2.55 4.05 3.47 2.38.92 2.38.62 2.81.58.43-.04 1.43-.58 1.63-1.15.2-.56.2-1.04.14-1.15-.06-.1-.24-.16-.48-.28z"/></svg>
+</a>
+
+<script>
+  function initThree() {
+    const canvas = document.getElementById('heroCanvas');
+    if (!canvas || !window.THREE) return;
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
+    camera.position.set(0, 0.4, 9);
+
+    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+    const resize = () => {
+      const w = canvas.parentElement.clientWidth, h = canvas.parentElement.clientHeight;
+      if (!w || !h) return;
+      renderer.setSize(w, h, false);
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+    };
+    window.addEventListener('resize', resize);
+    const ro = new ResizeObserver(resize);
+    ro.observe(canvas.parentElement);
+    resize();
+
+    scene.add(new THREE.AmbientLight(0xffffff, 0.9));
+    const dir = new THREE.DirectionalLight(0xffffff, 2.2);
+    dir.position.set(5, 6, 8);
+    scene.add(dir);
+    const dir2 = new THREE.DirectionalLight(0xffc98a, 1.2);
+    dir2.position.set(-6, -2, 4);
+    scene.add(dir2);
+    const rim = new THREE.PointLight(0xffa860, 3, 20);
+    rim.position.set(4, 1, 5);
+    scene.add(rim);
+
+    const group = new THREE.Group();
+    scene.add(group);
+
+    const glassMat = new THREE.MeshPhysicalMaterial({
+      color: 0xbfe0ff, transparent: true, opacity: 0.5, roughness: 0.05,
+      metalness: 0.1, transmission: 0.3, thickness: 0.3, side: THREE.DoubleSide,
+      emissive: 0xffb870, emissiveIntensity: 0.12
+    });
+    const frameColor = 0xd8dce0;
+
+    const panes = [];
+    const count = 7;
+    const frameMat = new THREE.MeshStandardMaterial({ color: frameColor, metalness: 0.6, roughness: 0.35 });
+    for (let i = 0; i < count; i++) {
+      const w = 2.4 + Math.random() * 0.8;
+      const h = 3.2 + Math.random() * 1.0;
+      const paneGroup = new THREE.Group();
+
+      const frameThick = 0.1;
+      const outerGeo = new THREE.PlaneGeometry(w + frameThick * 2, h + frameThick * 2);
+      const outerEdges = new THREE.EdgesGeometry(outerGeo);
+      paneGroup.add(new THREE.LineSegments(outerEdges, new THREE.LineBasicMaterial({ color: frameColor, linewidth: 4 })));
+      const barGeo = new THREE.BoxGeometry(w + frameThick * 2, frameThick, frameThick);
+      const barTop = new THREE.Mesh(barGeo, frameMat); barTop.position.y = h / 2 + frameThick / 2; paneGroup.add(barTop);
+      const barBottom = new THREE.Mesh(barGeo, frameMat); barBottom.position.y = -h / 2 - frameThick / 2; paneGroup.add(barBottom);
+      const sideGeo = new THREE.BoxGeometry(frameThick, h + frameThick * 2, frameThick);
+      const barLeft = new THREE.Mesh(sideGeo, frameMat); barLeft.position.x = -w / 2 - frameThick / 2; paneGroup.add(barLeft);
+
+      const sashPivot = new THREE.Group();
+      sashPivot.position.x = -w / 2;
+      paneGroup.add(sashPivot);
+
+      const sashGeo = new THREE.PlaneGeometry(w, h);
+      sashGeo.translate(w / 2, 0, 0);
+      const sashMesh = new THREE.Mesh(sashGeo, glassMat);
+      sashPivot.add(sashMesh);
+      const sashEdges = new THREE.EdgesGeometry(sashGeo);
+      sashPivot.add(new THREE.LineSegments(sashEdges, new THREE.LineBasicMaterial({ color: frameColor, linewidth: 3 })));
+      const mullGeo = new THREE.PlaneGeometry(w, 0.04);
+      mullGeo.translate(w / 2, 0, 0);
+      sashPivot.add(new THREE.Mesh(mullGeo, new THREE.MeshBasicMaterial({ color: frameColor })));
+
+      const angle = (i / count) * Math.PI * 2;
+      const radius = 3.4;
+      paneGroup.position.set(
+        Math.cos(angle) * radius + (Math.random() - 0.5) * 1.5 + 2.2,
+        Math.sin(angle * 1.3) * 1.8 + (Math.random() - 0.5) * 1,
+        (Math.random() - 0.5) * 4 + 1.5
+      );
+      paneGroup.rotation.y = (Math.random() - 0.5) * 1.2;
+      paneGroup.rotation.x = (Math.random() - 0.5) * 0.3;
+      paneGroup.userData.baseRot = { x: paneGroup.rotation.x, y: paneGroup.rotation.y };
+      paneGroup.userData.speedFactor = 0.5 + Math.random();
+      paneGroup.userData.sashPivot = sashPivot;
+      paneGroup.userData.swingPhase = Math.random() * Math.PI * 2;
+
+      group.add(paneGroup);
+      panes.push(paneGroup);
+    }
+
+    let mouseX = 0, mouseY = 0;
+    window.addEventListener('mousemove', (e) => {
+      mouseX = (e.clientX / window.innerWidth - 0.5);
+      mouseY = (e.clientY / window.innerHeight - 0.5);
+    });
+
+    const clock = new THREE.Clock();
+    const animate = () => {
+      const t = clock.getElapsedTime();
+      group.rotation.y = t * 0.12 + mouseX * 0.5;
+      group.rotation.x = mouseY * 0.2;
+      panes.forEach((p, i) => {
+        p.rotation.y = p.userData.baseRot.y + Math.sin(t * 0.3 * p.userData.speedFactor + i) * 0.15;
+        p.position.y += Math.sin(t * 0.5 + i) * 0.0008;
+        const openness = (Math.sin(t * 0.35 * p.userData.speedFactor + p.userData.swingPhase) + 1) / 2;
+        p.userData.sashPivot.rotation.y = -openness * 1.3;
+      });
+      renderer.render(scene, camera);
+      requestAnimationFrame(animate);
+    };
+    animate();
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    const nombre = document.getElementById('nombre').value;
+    const telefono = document.getElementById('telefono').value;
+    const ubicacion = document.getElementById('ubicacion').value;
+    const medidas = document.getElementById('medidas').value;
+    const mensaje = document.getElementById('mensaje').value;
+
+    let msg = 'Hola, quiero una cotización de Vidrio y Aluminio del Bajío.\n';
+    if (nombre) msg += `Nombre: ${nombre}\n`;
+    if (telefono) msg += `Teléfono: ${telefono}\n`;
+    msg += `Ubicación: ${ubicacion}\n`;
+    if (medidas) msg += `Medidas aproximadas: ${medidas}\n`;
+    if (mensaje) msg += `Detalles: ${mensaje}\n`;
+
+    window.open(`https://wa.me/524271613399?text=${encodeURIComponent(msg)}`, '_blank');
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initThree);
+  } else {
+    initThree();
+  }
+</script>
+
+</body>
+</html>
