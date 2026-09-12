@@ -38,46 +38,37 @@
     </nav>
   </header>
 
-  <!-- HERO - ESTILO TAXI SERVICE CON VIDEO DE FONDO -->
-  <section style="position:relative;min-height:600px;display:flex;align-items:center;justify-content:center;overflow:hidden;">
-    <!-- VIDEO DE FONDO -->
-    <video style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:1;" autoplay muted loop playsinline>
-      <source src="assets/video-cocina.mp4" type="video/mp4">
-    </video>
-
-    <!-- OVERLAY OSCURO PARA LEGIBILIDAD -->
-    <div style="position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(44,62,80,0.65);z-index:2;"></div>
-
-    <!-- CONTENIDO -->
-    <div style="position:relative;z-index:3;max-width:900px;width:100%;text-align:center;padding:80px 5vw;">
-      <div style="font-family:Oswald,sans-serif;font-weight:600;font-size:16px;letter-spacing:2px;text-transform:uppercase;color:white;margin-bottom:20px;">Solicita tu cotización</div>
-      <h1 style="font-family:Oswald,sans-serif;font-weight:700;font-size:clamp(24px,4vw,48px);line-height:1.1;margin:0 0 40px;color:white;">
+  <!-- HERO - ESTILO TAXI SERVICE -->
+  <section style="background:linear-gradient(135deg, #FF9500 0%, #FFB347 100%);padding:80px 5vw;display:flex;align-items:center;justify-content:center;min-height:500px;">
+    <div style="max-width:900px;width:100%;text-align:center;">
+      <div style="font-family:Oswald,sans-serif;font-weight:600;font-size:16px;letter-spacing:2px;text-transform:uppercase;color:#2C3E50;margin-bottom:20px;">Solicita tu cotización</div>
+      <h1 style="font-family:Oswald,sans-serif;font-weight:700;font-size:clamp(24px,4vw,48px);line-height:1.1;margin:0 0 40px;color:#2C3E50;">
         ¿Necesitas vidrio o aluminio?
       </h1>
 
       <div style="margin-bottom:40px;">
-        <p style="font-size:14px;color:rgba(255,255,255,0.95);margin:0 0 20px;font-weight:600;letter-spacing:1px;">LLAMANOS DIRECTAMENTE:</p>
+        <p style="font-size:14px;color:#2C3E50;margin:0 0 20px;font-weight:600;letter-spacing:1px;">LLAMANOS DIRECTAMENTE:</p>
         <div style="display:flex;flex-wrap:wrap;gap:20px;justify-content:center;align-items:center;margin-bottom:30px;">
           <div style="text-align:center;">
-            <a href="tel:+524271613399" style="font-family:Oswald,sans-serif;font-weight:700;font-size:clamp(32px,6vw,52px);color:white;text-decoration:none;display:block;line-height:1;text-shadow:0 2px 8px rgba(0,0,0,0.3);">
+            <a href="tel:+524271613399" style="font-family:Oswald,sans-serif;font-weight:700;font-size:clamp(32px,6vw,52px);color:#2C3E50;text-decoration:none;display:block;line-height:1;">
               427 161 3399
             </a>
           </div>
-          <div style="color:white;font-weight:700;font-size:20px;">o</div>
+          <div style="color:#2C3E50;font-weight:700;font-size:20px;">o</div>
           <div style="text-align:center;">
-            <a href="tel:+524272751239" style="font-family:Oswald,sans-serif;font-weight:700;font-size:clamp(32px,6vw,52px);color:white;text-decoration:none;display:block;line-height:1;text-shadow:0 2px 8px rgba(0,0,0,0.3);">
+            <a href="tel:+524272751239" style="font-family:Oswald,sans-serif;font-weight:700;font-size:clamp(32px,6vw,52px);color:#2C3E50;text-decoration:none;display:block;line-height:1;">
               427 275 1239
             </a>
           </div>
         </div>
-        <p style="font-size:13px;color:rgba(255,255,255,0.85);margin:20px 0 0;font-style:italic;">Los números son tappables en tu celular</p>
+        <p style="font-size:13px;color:#666;margin:20px 0 0;font-style:italic;">Los números son tappables en tu celular</p>
       </div>
 
       <div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center;">
-        <a href="{{ waLink }}" target="_blank" style="display:flex;align-items:center;gap:10px;background:#FF9500;color:white;font-family:Oswald,sans-serif;font-weight:600;font-size:16px;padding:18px 32px;border-radius:6px;text-decoration:none;border:2px solid #FF9500;transition:all 0.3s;">
+        <a href="{{ waLink }}" target="_blank" style="display:flex;align-items:center;gap:10px;background:#2C3E50;color:white;font-family:Oswald,sans-serif;font-weight:600;font-size:16px;padding:18px 32px;border-radius:6px;text-decoration:none;border:2px solid #2C3E50;transition:all 0.3s;">
           📱 Cotizar por WhatsApp
         </a>
-        <a href="#cotizar" style="display:flex;align-items:center;gap:10px;background:rgba(255,255,255,0.15);color:white;font-family:Oswald,sans-serif;font-weight:600;font-size:16px;padding:18px 32px;border-radius:6px;text-decoration:none;border:2px solid white;transition:all 0.3s;backdrop-filter:blur(5px);">
+        <a href="#cotizar" style="display:flex;align-items:center;gap:10px;background:transparent;color:#2C3E50;font-family:Oswald,sans-serif;font-weight:600;font-size:16px;padding:18px 32px;border-radius:6px;text-decoration:none;border:2px solid #2C3E50;transition:all 0.3s;">
           📋 Llenar formulario
         </a>
       </div>
@@ -94,8 +85,8 @@
       <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;">
         <sc-for list="{{ servicios }}" as="s" hint-placeholder-count="10">
           <div style="background:#F8F9FA;border:1px solid #E8E8E8;border-radius:12px;overflow:hidden;transition:all .3s;cursor:pointer;">
-            <div style="width:100%;aspect-ratio:4/3;background:#F0F0F0;overflow:hidden;">
-              <img src="{{ s.src }}" alt="{{ s.title }}" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;">
+            <div style="width:100%;aspect-ratio:4/3;background:#F0F0F0;">
+              <image-slot id="{{ s.id }}" shape="rect" placeholder="{{ s.placeholder }}" src="{{ s.src }}"></image-slot>
             </div>
             <div style="padding:18px 20px 22px;font-family:Oswald,sans-serif;font-weight:600;font-size:17px;line-height:1.3;color:#2C3E50;">{{ s.title }}</div>
           </div>
@@ -267,16 +258,16 @@ class Component extends DCLogic {
       waLink: buildLink('Hola, quiero una cotización de Vidrio y Aluminio del Bajío.'),
       showForm: this.props.showQuoteForm ?? true,
       servicios: [
-        { id: 'svc-ventanas-aluminio', title: 'Ventanas de aluminio', placeholder: 'foto: ventana de aluminio', src: 'assets/svc-ventanas.webp' },
-        { id: 'svc-puertas-aluminio', title: 'Puertas de aluminio', placeholder: 'foto: puerta de aluminio', src: 'assets/svc-puertas.webp' },
-        { id: 'svc-canceles-bano', title: 'Canceles para baño', placeholder: 'foto: cancel de baño', src: 'assets/svc-canceles.webp' },
-        { id: 'svc-domos', title: 'Domos', placeholder: 'foto: domo', src: 'assets/svc-domos.webp' },
-        { id: 'svc-barandales', title: 'Barandales de vidrio templado', placeholder: 'foto: barandal de vidrio', src: 'assets/svc-barandales.webp' },
-        { id: 'svc-mosquiteros', title: 'Mosquiteros', placeholder: 'foto: mosquitero', src: 'assets/svc-mosquiteros.webp' },
-        { id: 'svc-fachadas', title: 'Fachadas de cristal y aluminio', placeholder: 'foto: fachada de cristal', src: 'assets/svc-fachadas.webp' },
-        { id: 'svc-construccion', title: 'Construcción residencial', placeholder: 'foto: construcción residencial', src: 'assets/svc-construccion.webp' },
-        { id: 'svc-pergolas', title: 'Pérgolas', placeholder: 'foto: pérgola', src: 'assets/svc-pergolas.webp' },
-        { id: 'svc-pvc', title: 'Ventanas en PVC', placeholder: 'foto: ventana de PVC', src: 'assets/svc-pvc.webp' }
+        { id: 'svc-ventanas-aluminio', title: 'Ventanas de aluminio', placeholder: 'foto: ventana de aluminio' },
+        { id: 'svc-puertas-aluminio', title: 'Puertas de aluminio', placeholder: 'foto: puerta de aluminio' },
+        { id: 'svc-canceles-bano', title: 'Canceles para baño', placeholder: 'foto: cancel de baño' },
+        { id: 'svc-domos', title: 'Domos', placeholder: 'foto: domo' },
+        { id: 'svc-barandales', title: 'Barandales de vidrio templado', placeholder: 'foto: barandal de vidrio' },
+        { id: 'svc-mosquiteros', title: 'Mosquiteros', placeholder: 'foto: mosquitero' },
+        { id: 'svc-fachadas', title: 'Fachadas de cristal y aluminio', placeholder: 'foto: fachada de cristal' },
+        { id: 'svc-construccion', title: 'Construcción residencial', placeholder: 'foto: construcción residencial' },
+        { id: 'svc-pergolas', title: 'Pérgolas', placeholder: 'foto: pérgola' },
+        { id: 'svc-pvc', title: 'Ventanas en PVC', placeholder: 'foto: ventana de PVC' }
       ],
       gallery: [
         { src: 'assets/Cancel-de-banio-con-perfil-negro.webp', alt: 'Cancel de baño con perfil negro' },
