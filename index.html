@@ -21,10 +21,16 @@
   ::selection{background:#FF9500;color:white;}
   #galerySlideshow{aspect-ratio:16/10;}
   .logo-img{height:40px;width:auto;}
-  #prevSlide,#nextSlide{padding:12px 16px;font-size:20px;}
+  #prevSlide,#nextSlide{padding:12px 16px;font-size:20px;display:flex;align-items:center;gap:6px;}
+  .nav-controls{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;}
+  .logo-brand-container{display:flex;align-items:center;gap:14px;}
+  .logo-brand-container span{color:white;}
   @media (max-width:767px){
     .logo-img{height:28px;}
-    #prevSlide,#nextSlide{padding:4px 6px;font-size:11px;}
+    .logo-brand-container{flex-direction:column;gap:8px;}
+    #prevSlide,#nextSlide{padding:4px 6px;font-size:11px;flex-direction:column;gap:2px;}
+    .nav-controls{justify-content:flex-start;gap:12px;align-items:flex-start;}
+    #indicators{flex:1;}
   }
   @media (min-width:768px){#galerySlideshow{aspect-ratio:21/9;max-width:800px;margin:0 auto;}}
 </style>
@@ -34,9 +40,9 @@
 
   <!-- HEADER -->
   <header style="position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 5vw;background:white;backdrop-filter:blur(10px);border-bottom:1px solid #E8E8E8;box-shadow:0 2px 4px rgba(0,0,0,0.05);">
-    <div style="display:flex;align-items:center;gap:14px;">
+    <div class="logo-brand-container">
       <img src="assets/logo.png" alt="Vidrio y Aluminio del Bajío" class="logo-img" style="border-radius:4px;">
-      <span style="font-family:Oswald,sans-serif;font-weight:600;font-size:16px;letter-spacing:0.3px;color:#2C3E50;">Vidrio y Aluminio del Bajío</span>
+      <span style="font-family:Oswald,sans-serif;font-weight:600;font-size:16px;letter-spacing:0.3px;">Vidrio y Aluminio del Bajío</span>
     </div>
     <nav style="display:flex;align-items:center;gap:28px;">
       <a href="#servicios" style="color:#2C3E50;font-size:14px;display:none;">Servicios</a>
@@ -181,7 +187,7 @@
       </div>
 
       <!-- NAVEGACIÓN -->
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+      <div class="nav-controls">
         <button id="prevSlide" style="background:rgba(255,255,255,0.7);border:none;padding:12px 16px;font-size:20px;cursor:pointer;border-radius:6px;font-weight:bold;color:#2C3E50;">❮ Anterior</button>
         <div id="indicators" style="display:flex;gap:8px;justify-content:center;"></div>
         <button id="nextSlide" style="background:rgba(255,255,255,0.7);border:none;padding:12px 16px;font-size:20px;cursor:pointer;border-radius:6px;font-weight:bold;color:#2C3E50;">Siguiente ❯</button>
