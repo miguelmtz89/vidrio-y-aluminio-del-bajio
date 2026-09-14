@@ -21,7 +21,7 @@
   ::selection{background:#FF9500;color:white;}
   #galerySlideshow{aspect-ratio:16/10;}
   .logo-img{height:40px;width:auto;}
-  #prevSlide,#nextSlide{padding:12px 16px;font-size:20px;display:flex;align-items:center;gap:6px;}
+  #prevSlide,#nextSlide{display:none;}
   .nav-controls{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;}
   .logo-brand-container{display:flex;align-items:center;gap:14px;}
   .logo-brand-container span{color:white;}
@@ -33,7 +33,6 @@
   @media (max-width:767px){
     .logo-img{height:28px;}
     .logo-brand-container{flex-direction:column;gap:8px;}
-    #prevSlide,#nextSlide{display:none;}
     .nav-controls{justify-content:space-between;gap:12px;align-items:center;flex-wrap:nowrap;}
     #indicators{flex:1;display:flex;gap:8px;justify-content:center;}
     nav{flex-direction:column;width:100%;align-items:flex-start;}
