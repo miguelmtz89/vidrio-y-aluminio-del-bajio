@@ -318,6 +318,92 @@ class Component extends DCLogic {
     };
   }
 }
+
+// SLIDESHOW CONTROLLER
+setTimeout(() => {
+  const slideshowContainer = document.getElementById('galerySlideshow');
+  const slides = document.querySelectorAll('.gallery-slide');
+  const prevBtn = document.getElementById('prevSlide');
+  const nextBtn = document.getElementById('nextSlide');
+  const indicatorsContainer = document.getElementById('indicators');
+  const thumbnailsContainer = document.getElementById('thumbnails');
+
+  if (!slideshowContainer || slides.length === 0) return;
+
+  let currentSlide = 0;
+  let autoplayInterval;
+
+  // Create indicator dots
+  slides.forEach((_, index) => {
+    const dot = document.createElement('button');
+    dot.style.cssText = 'width:12px;height:12px;border-radius:50%;border:2px solid #FF9500;background:' + (index === 0 ? '#FF9500' : 'transparent') + ';cursor:pointer;padding:0;transition:all 0.3s;';
+    dot.onclick = () => goToSlide(index);
+    indicatorsContainer.appendChild(dot);
+  });
+
+  // Create thumbnails
+  slides.forEach((slide, index) => {
+    const thumb = document.createElement('img');
+    thumb.src = slide.src;
+    thumb.alt = slide.alt;
+    thumb.style.cssText = 'width:60px;height:60px;object-fit:cover;border-radius:6px;cursor:pointer;opacity:' + (index === 0 ? '1' : '0.6') + ';border:2px solid ' + (index === 0 ? '#FF9500' : 'transparent') + ';transition:all 0.3s;flex-shrink:0;';
+    thumb.onclick = () => goToSlide(index);
+    thumbnailsContainer.appendChild(thumb);
+  });
+
+  function updateSlide() {
+    const dots = indicatorsContainer.querySelectorAll('button');
+    const thumbs = thumbnailsContainer.querySelectorAll('img');
+
+    slides.forEach((slide, index) => {
+      slide.style.opacity = index === currentSlide ? '1' : '0';
+      if (dots[index]) {
+        dots[index].style.background = index === currentSlide ? '#FF9500' : 'transparent';
+      }
+      if (thumbs[index]) {
+        thumbs[index].style.opacity = index === currentSlide ? '1' : '0.6';
+        thumbs[index].style.borderColor = index === currentSlide ? '#FF9500' : 'transparent';
+      }
+    });
+  }
+
+  function nextSlide() {
+    currentSlide = (currentSlide + 1) % slides.length;
+    updateSlide();
+    resetAutoplay();
+  }
+
+  function prevSlide() {
+    currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+    updateSlide();
+    resetAutoplay();
+  }
+
+  function goToSlide(index) {
+    currentSlide = index;
+    updateSlide();
+    resetAutoplay();
+  }
+
+  function startAutoplay() {
+    autoplayInterval = setInterval(nextSlide, 2000);
+  }
+
+  function resetAutoplay() {
+    clearInterval(autoplayInterval);
+    startAutoplay();
+  }
+
+  // Event listeners
+  nextBtn.addEventListener('click', nextSlide);
+  prevBtn.addEventListener('click', prevSlide);
+  slideshowContainer.addEventListener('mouseenter', () => clearInterval(autoplayInterval));
+  slideshowContainer.addEventListener('mouseleave', startAutoplay);
+
+  // Initialize
+  updateSlide();
+  startAutoplay();
+}, 500);
 </script>
 </body>
 </html>
