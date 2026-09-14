@@ -33,9 +33,9 @@
   @media (max-width:767px){
     .logo-img{height:28px;}
     .logo-brand-container{flex-direction:column;gap:8px;}
-    #prevSlide,#nextSlide{padding:2px 4px;font-size:10px;flex-direction:column;gap:0;}
-    .nav-controls{justify-content:flex-start;gap:6px;align-items:flex-start;}
-    #indicators{flex:1;}
+    #prevSlide,#nextSlide{padding:1px 2px;font-size:8px;flex-direction:column;gap:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+    .nav-controls{justify-content:flex-start;gap:2px;align-items:flex-start;flex-wrap:wrap;}
+    #indicators{flex:1;min-width:100%;order:3;}
     nav{flex-direction:column;width:100%;align-items:flex-start;}
     nav a[target="_blank"]{width:100%;text-align:center;justify-content:center;}
   }
